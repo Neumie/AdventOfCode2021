@@ -1,0 +1,7 @@
+clear; close all; clc;
+
+depth = fileread('second.txt'); %input který nám dal AoC skopírovaný do .txt souboru
+depthByLine = regexp(depth, '\n', 'split'); %použiju delimiter \n pro rozdělení dat na jednotlivé instrukce
+data = regexp(depthByLine, ' ', 'split'); %rozdělím direction od čísla -> finální data
+
+data{1}

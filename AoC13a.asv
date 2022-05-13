@@ -1,0 +1,51 @@
+clear; close all; clc;
+
+numberOfPoints = 18; %18 v testu 782
+numberOfFolds = 2; %2 v testu 12
+
+data = readmatrix('inputAoC13test.txt', Delimiter = ',', OutputType = 'string');
+
+pointsX = str2double(data(1:numberOfPoints)); %X-ové souřadnice
+pointsY = str2double(data(1:numberOfPoints, 2))'; %Y-ové souřadnice
+folds = data(numberOfPoints+1:numberOfPoints+numberOfFolds); %instrukce
+
+for i = 1:length(folds) %X-ové překlady budou kladné, Y-ové budou záporné
+    if (folds{i}(12) == 'x')
+        folds(i) = regexp(folds{i}, '\d*', 'Match');
+    else
+        folds(i) = regexp(folds{i}, '\d*', 'Match');
+        folds(i) = -str2double(folds{i});
+    end
+end
+folds = str2double(folds);
+
+map = zeros(max(pointsY)+1, max(pointsX)+1);
+for i = 1:numberOfPoints %vytvoří mapu bodů
+    map(pointsY(i)+1, pointsX(i)+1) = 1;
+end
+
+for i = 1:2 %how many folds to do
+    if (sign(folds(i)) == -1) %Y fold
+        fold = folds(i)*-1;
+        tempMap = map(fold+2:end, :);
+        map = map(1:fold,:);
+        for j = 1:height(tempMap) %výškakrát
+            for k = 1:width(tempMap) %šířkakrát
+                if (tempMap(j, k) == 1)
+                    map((height(map)+1)-j, k) = 1;
+                end
+            end
+        end
+    else %X fold
+        fold = folds(i);
+        tempMap = map(:, fold+2:end);
+        map = map(:, 1:fold);
+        for j = 1:height(tempMap) %výškakrát
+            for k = 1:width(tempMap) %šířkakrát
+                if (tempMap(j, k) == 1)
+                    map(j, width(map)) = 1;
+                end
+            end
+        end
+    end
+end

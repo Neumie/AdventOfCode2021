@@ -1,0 +1,14 @@
+clear; clc; close all;
+
+input = fileread('inputAoC6test.txt'); %input který nám dal AoC skopírovaný do .txt souboru
+data = regexp(input, '[,]', 'split');
+
+for day = 1:18
+    for i = 1:length(data)
+        if str2double(data(i)) == 0 %reset
+            data(i) = 6;
+            data(length(data)+1) = 8;
+        end
+        data(i) = data(i)-1;
+    end
+end

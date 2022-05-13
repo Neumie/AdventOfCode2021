@@ -1,0 +1,21 @@
+clear; clc; close all;
+
+file = fileread('inputAoC25test.txt'); %input který nám dal AoC skopírovaný do .txt souboru
+data = regexp(file, '\n', 'split'); %použiju delimiter \n pro rozdělení dat na jednotlivé instrukce
+for i = 1:length(data) %odstraním zbytky
+    data{i}(length(data{i})) = [];
+end
+
+tempData = data; %tempdata = mapa před posunem
+newData = data; %newData = mapa po posunu
+for i = 1:length(data)%pohyb >
+    for j = 1:length(data{i})
+        if (tempData{i}(j) == ">")
+            try if (tempData{i}(j+1) == ".")
+                    newData{i}(j+1) = ">";
+                    newData{i}(j) = ".";
+                end
+            end
+        end
+    end
+end
